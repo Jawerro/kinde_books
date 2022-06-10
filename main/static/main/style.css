@@ -1,0 +1,21 @@
+header {
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+a {
+    color: green;
+}
+
+.block-left {
+    width:50%;
+    height:800px;
+    overflow:auto;
+    float:left;
+}
+.block-right {
+    width:50%;
+    height:800px;
+    overflow:auto;
+    float: right;
+}

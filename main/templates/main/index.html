@@ -1,0 +1,41 @@
+{% extends 'layout/basic.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}"> 
+{% block title %}Книги{% endblock %}
+
+{% block content %}
+<header><h1>Список книг</h1></header>
+<a href="{% url 'main:add_book' %}">Добавить книгу</a>
+<div class="block-left">
+    <h2>Незагруженные книги</h2>
+    {% if books %}
+    <ul>   
+    {% for book in books %}
+        {% if not book.download %}
+        <li>
+        <h3><a href="{% url 'main:book_detail' book.pk %}">{{ book.name }}</a></h3>
+        </li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+    {% endif %} 
+    <!-- фильтрация -->
+</div>
+<div class="block-right">
+    <h2>Загруженные книги</h2>
+    {% if books %}
+    <ul>   
+    {% for book in books %}
+        {% if book.download %}
+        <li>
+        <h3><a href="{% url 'main:book_detail' book.pk %}">{{ book.name }}</a></h3>
+        </li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+    {% endif %} 
+    <!-- фильтрация -->
+</div>
+<p><a href="read.html">Прочитанные книги</a>
+<footer>О сайте</footer>
+{% endblock %}

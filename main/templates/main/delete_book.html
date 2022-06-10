@@ -1,0 +1,9 @@
+{% extends 'layout/basic.html' %}
+{% block content %}
+    <h1>Удалить книгу<h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p class="book_delete">Действительно удалить книгу "{{ book.name }}"?</p>
+        <button type="submit">Подтвердить</button>
+    </form>
+{% endblock %}
