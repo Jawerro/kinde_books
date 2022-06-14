@@ -9,7 +9,24 @@ from django.urls import reverse_lazy
 
 
 from .models import Author, Book
-from .forms import BookForm
+from .forms import BookForm, AuthorForm
+
+
+# отправка файла на почту kindle
+def send_email(request):
+    pass
+
+#добавление автора
+def add_author(request):
+    if request.method == 'POST':
+        form = AuthorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('main:add_book')
+    else:
+        form = AuthorForm()
+        return render(request, 'main/add_author.html', {'form':form})
+
 
 # добавление новой книги
 def add_book(request):
@@ -25,6 +42,9 @@ def add_book(request):
         return render(request, 'main/add_book.html', {'form': form})
 
 
+def search_author(request, author_id):
+    author = Author.objects.get(id=author_id)
+    return HttpResponse(author.name)
 
 class IndexView(generic.ListView):
     template_name = 'main/index.html'
@@ -34,7 +54,7 @@ class IndexView(generic.ListView):
 
 class DetailView(generic.DetailView):
     model = Book
-    template_name = 'main/detail.html'
+    template_name = 'main/book_detail.html'
 
 
 class UpdateBookView(SuccessMessageMixin, UpdateView):
@@ -50,9 +70,7 @@ class DeleteBook(SuccessMessageMixin, DeleteView):
     success_url = reverse_lazy('main:index')
 
 
-def search_author(request, author_id):
-    author = Author.objects.get(id=author_id)
-    return HttpResponse(author.name)
+
 
 
 

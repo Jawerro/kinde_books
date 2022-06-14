@@ -1,0 +1,21 @@
+{% extends 'layout/basic.html' %}
+{% block title %}{{ book.name }} - {{ book.author.name }}{% endblock%}
+{% block content %}
+    {% if book.file %}
+    <p>Название: <a href="{{ book.file.url }}">{{ book.name }}</a></p>
+    {% else %}
+    <p>Название: {{ book.name }}</p>
+    {% endif %}
+    <p>Жанр: {{ book.genre }}</p>
+    <p>Серия: {{ book.series }}</p>
+    <p>Автор: {{ book.author }}</p>
+    {% if not book.download %}
+    <form action="{% url 'main:send_email'  %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Загрузить?</button>
+    </form>
+    {% endif %}
+    <h3><a href="{% url 'main:change_book' book.pk %}">Редактировать</a></h3>
+    <h3><a href="{% url 'main:delete_book' book.pk %}">Удалить</a></h3>
+    <h3 class="home"><a href="{% url 'main:index' %}">На главную</a></h3>
+{% endblock %}

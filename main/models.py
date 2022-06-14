@@ -7,6 +7,7 @@ from django.urls import reverse
 
 class Author(models.Model):
     name = models.CharField(max_length=200, unique=True, verbose_name = 'Автор')
+    bio = models.TextField(verbose_name = 'Биография', blank=True)
 
     def __str__(self):
         return self.name
@@ -22,7 +23,7 @@ class Book(models.Model):
                      blank=False)
     genre = models.CharField(max_length=100, verbose_name='Жанр', blank=True)
     series = models.CharField(max_length=100, verbose_name='Серия', blank=True)
-    author = models.ForeignKey(Author, on_delete=models.SET('Автор неизвестен'))
+    author = models.ForeignKey(Author, on_delete=models.DO_NOTHING)
     read = models.BooleanField(default=False)
     download = models.BooleanField(default=False)
     file = models.FileField(upload_to='books/', verbose_name='Файл', null=True, blank=True)
