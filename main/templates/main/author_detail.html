@@ -1,0 +1,14 @@
+{% extends 'layout/basic.html' %}
+{% block title %}{{ author.name }}{% endblock%}
+{% block content %}
+    <p>{{ author.name }}</p>
+    <p>{{ author.bio }}</p>
+    {% if books %}
+    {% for book in books %}
+    <ul>
+        <li><a href="{% url 'main:book_detail' book.pk %}">{{ book.name }}</a></li>
+    </ul>
+    {% endfor %}
+    {% endif %}
+    <h3 class="home"><a href="{% url 'main:index' %}">На главную</a></h3>
+{% endblock %}

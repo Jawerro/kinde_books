@@ -23,7 +23,7 @@ class Book(models.Model):
                      blank=False)
     genre = models.CharField(max_length=100, verbose_name='Жанр', blank=True)
     series = models.CharField(max_length=100, verbose_name='Серия', blank=True)
-    author = models.ForeignKey(Author, on_delete=models.DO_NOTHING)
+    author = models.ForeignKey(Author, on_delete=models.DO_NOTHING, verbose_name='Автор')
     read = models.BooleanField(default=False)
     download = models.BooleanField(default=False)
     file = models.FileField(upload_to='books/', verbose_name='Файл', null=True, blank=True)

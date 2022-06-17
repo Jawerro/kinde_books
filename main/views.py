@@ -6,6 +6,10 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
+from django.core.mail import send_mail, EmailMessage
+from kindle_books import settings
+import os
+from decouple import config
 
 
 from .models import Author, Book
@@ -13,8 +17,34 @@ from .forms import BookForm, AuthorForm
 
 
 # отправка файла на почту kindle
-def send_email(request):
-    pass
+def send_email(request, pk):
+        book = Book.objects.get(id=pk)
+        email_recipient = []
+        email_recipient.append(config('email_recipient', default=''))
+        email = EmailMessage(
+            book.name,
+            '',
+            settings.EMAIL_HOST_USER,
+            email_recipient,
+
+        )
+        try:
+            email.attach_file(book.file.path)
+        except FileNotFoundError:
+            messages.error(request, 'Файл не существует')
+            return redirect('main:index')
+        try:
+            email.send()
+            book.download = True
+            book.save()
+            messages.success(request, 'Файл отправлен')
+            return redirect('main:index')
+        except:
+            messages.error(request, email)
+            messages.error(request, 'Ошибка.Файл не отправлен')
+            return redirect('main:book_detail', pk)
+            
+   
 
 #добавление автора
 def add_author(request):
@@ -41,18 +71,25 @@ def add_book(request):
         form = BookForm()
         return render(request, 'main/add_book.html', {'form': form})
 
+# просмотр сведений об авторе
+def view_author(request, author):
+    author = Author.objects.get(name=author)    
+    books = Book.objects.filter(author=author)
+    context = {'books': books, 'author': author}
+    return render(request, 'main/author_detail.html', context)
 
 def search_author(request, author_id):
     author = Author.objects.get(id=author_id)
     return HttpResponse(author.name)
 
 class IndexView(generic.ListView):
+    model = Book
     template_name = 'main/index.html'
     context_object_name = 'books'
     queryset = Book.objects.all()
 
 
-class DetailView(generic.DetailView):
+class BookDetailView(generic.DetailView):
     model = Book
     template_name = 'main/book_detail.html'
 
@@ -67,7 +104,14 @@ class UpdateBookView(SuccessMessageMixin, UpdateView):
 class DeleteBook(SuccessMessageMixin, DeleteView):
     model = Book
     template_name = 'main/delete_book.html'
+    success_message = 'Книга удалена'
     success_url = reverse_lazy('main:index')
+
+class ReadedBooks(generic.ListView):
+    model = Book
+    template_name = 'main/readed.html'
+    context_object_name = 'books'
+    queryset = Book.objects.filter(read=True)
 
 
 

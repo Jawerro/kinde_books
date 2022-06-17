@@ -1,21 +1,40 @@
 header {
     text-align: center;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:chocolate
 }
 
-a {
-    color: green;
+
+
+.reference {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-style: italic;
 }
 
-.block-left {
-    width:50%;
-    height:800px;
-    overflow:auto;
-    float:left;
+.tables {
+    text-align: center;
 }
-.block-right {
-    width:50%;
-    height:800px;
-    overflow:auto;
-    float: right;
+
+table.t1 {
+    display: inline;
+    padding: 0;
+    spacing: 0;
+	width: 100%;
+	border: 1px solid #dddddd;
+	border-collapse: collapse; 
+}
+table.t1 th {
+	font-weight: bold;
+	padding: 5px;
+	background: #efefef;
+	border: 1px solid #dddddd;
+}
+table.t1 td {
+	border: 1px solid #dddddd;
+	padding: 5px;
+}
+
+table caption {
+    margin: 5, 5, 5, 5;
 }

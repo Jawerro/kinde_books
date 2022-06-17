@@ -4,38 +4,56 @@
 {% block title %}Книги{% endblock %}
 
 {% block content %}
+
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+
 <header><h1>Список книг</h1></header>
-<a href="{% url 'main:add_book' %}">Добавить книгу</a>
-<div class="block-left">
-    <h2>Незагруженные книги</h2>
-    {% if books %}
-    <ul>   
-    {% for book in books %}
-        {% if not book.download %}
-        <li>
-        <h3><a href="{% url 'main:book_detail' book.pk %}">{{ book.name }}</a></h3>
-        </li>
-        {% endif %}
-    {% endfor %}
-    </ul>
-    {% endif %} 
-    <!-- фильтрация -->
-</div>
-<div class="block-right">
-    <h2>Загруженные книги</h2>
-    {% if books %}
-    <ul>   
-    {% for book in books %}
-        {% if book.download %}
-        <li>
-        <h3><a href="{% url 'main:book_detail' book.pk %}">{{ book.name }}</a></h3>
-        </li>
-        {% endif %}
-    {% endfor %}
-    </ul>
-    {% endif %} 
-    <!-- фильтрация -->
-</div>
-<p><a href="read.html">Прочитанные книги</a>
+<p class="reference"><a href="{% url 'main:add_book' %}">Добавить книгу</a></p>
+
+{% if books %}
+   <div class="tables">
+        <table class="t1" border: 5px #000>
+        <caption><b>Незагруженные книги</b></caption>
+            <tr><th>Название</th><th>Автор</th><th>Жанр</th><th>Серия</th></tr>
+            {% for book in books %}
+                {% if not book.download %}
+                <tr>
+                    <td><a href="{% url 'main:book_detail' book.pk %}">{{ book.name }}</a></td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.genre }}</td>
+                    <td>{{ book.seria }}</td>
+                </tr> 
+                {% endif %}
+            {% endfor %}
+        </table>
+          <!-- фильтрация -->
+        <table class="t1">
+        <caption><b>Загруженные книги</b></caption>
+            <tr>
+                <th>Название</th>
+                <th>Автор</th>
+                <th>Жанр</th>
+                <th>Серия</th>
+            </tr>
+            {% for book in books %}
+                {% if  book.download %}
+                <tr>
+                    <td><a href="{% url 'main:book_detail' book.pk %}">{{ book.name }}</a></td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.genre }}</td>
+                    <td>{{ book.seria }}</td>
+                </tr> 
+                {% endif %}
+            {% endfor %}
+        </table>
+   </div>
+   
+{% endif %} 
+
+<p class="reference"><a href="{% url 'main:readed' %}">Прочитанные книги</a>
 <footer>О сайте</footer>
 {% endblock %}

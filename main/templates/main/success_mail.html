@@ -1,0 +1,7 @@
+{% extends 'layout/basic.html' %}
+
+{% block content %}
+<p> Книга успешно отправлена на читалку</p>
+{{ email }}
+<p><a href="{% url 'main:index' %}">На главную</a></p>
+{% endblock %}

@@ -8,10 +8,9 @@
     {% endif %}
     <p>Жанр: {{ book.genre }}</p>
     <p>Серия: {{ book.series }}</p>
-    <p>Автор: {{ book.author }}</p>
+    <p>Автор: <a href="{% url 'main:view_author' book.author.name %}">{{ book.author }}</a></p>
     {% if not book.download %}
-    <form action="{% url 'main:send_email'  %}" method="post">
-        {% csrf_token %}
+    <form action="{% url 'main:send_email' book.pk %}">
         <button type="submit">Загрузить?</button>
     </form>
     {% endif %}

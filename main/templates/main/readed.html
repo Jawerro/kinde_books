@@ -1,0 +1,19 @@
+{% extends 'layout/basic.html' %}
+{% block title %}Прочитанные книги{% endblock %}
+
+{% block content %}
+
+<table class="t1" border: 5px #000>
+    <caption><b>Прчитанные книги</b></caption>
+        <tr><th>Название</th><th>Автор</th><th>Жанр</th><th>Серия</th></tr>
+        {% for book in books %}
+            <tr>
+                <td><a href="{% url 'main:book_detail' book.pk %}">{{ book.name }}</a></td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.genre }}</td>
+                <td>{{ book.seria }}</td>
+            </tr> 
+        {% endfor %}
+    </table>
+
+{% endblock %}
